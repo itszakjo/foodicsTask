@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\IngredientNotification;
 
-interface IngredientNotificationInterface
+interface IngredientNotificationRepositoryInterface
 {
     public function find(int $id): IngredientNotification;
 
