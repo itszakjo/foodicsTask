@@ -9,6 +9,13 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    /**
+     * Attempt to authenticate the user and generate a token.
+     *
+     * @param \App\Http\Requests\LoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function login(LoginRequest $request)
     {
         if (!Auth::attempt($request->validated())) {
@@ -23,6 +30,12 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+    /**
+     * Respond with the access token.
+     *
+     * @param string $token
+     * @return \Illuminate\Http\JsonResponse
+     */
     private function respondWithToken($token)
     {
         return response()->json([
