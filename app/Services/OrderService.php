@@ -40,8 +40,10 @@ class OrderService implements OrderServiceInterface
         try {
             DB::beginTransaction();
 
+            // Create new order
             $order = $this->orderRepository->create(['user_id' => $userId]);
 
+            // Process Order Items
             $this->processOrderItems($order,$items);
 
             DB::commit();
@@ -62,15 +64,11 @@ class OrderService implements OrderServiceInterface
 
     }
 
-    /**
-     * Process the items in the order.
-     *
-     * @param Order $order The order being processed.
-     * @param array $items An array of items to be ordered, each item containing 'product_id' and 'quantity'.
-     * @return void
-     */
     public function processOrderItems($order,$items)
     {
+        /*
+         *  Handles order items and stock updates
+         */
         foreach ($items as $item) {
             $product = $this->productRepository->find($item['product_id']);
 
