@@ -27,6 +27,14 @@ class OrderService implements OrderServiceInterface
         $this->inventoryService = $inventoryService;
     }
 
+    /**
+     * Create a new order for the specified user with the given items.
+     *
+     * @param int $userId The ID of the user placing the order.
+     * @param array $items An array of items to be ordered, each item containing 'product_id' and 'quantity'.
+     * @return Order The created order.
+     * @throws SystemException If an error occurs while creating the order.
+     */
     public function createOrder(int $userId, array $items): Order
     {
         try {
@@ -40,6 +48,7 @@ class OrderService implements OrderServiceInterface
 
             return $order;
         }catch (\Exception $e) {
+            // Rollback the transaction in case of an exception
             DB::rollBack();
 
             Log::error("Failed to create order: {$e->getMessage()}", [
@@ -53,6 +62,13 @@ class OrderService implements OrderServiceInterface
 
     }
 
+    /**
+     * Process the items in the order.
+     *
+     * @param Order $order The order being processed.
+     * @param array $items An array of items to be ordered, each item containing 'product_id' and 'quantity'.
+     * @return void
+     */
     public function processOrderItems($order,$items)
     {
         foreach ($items as $item) {
