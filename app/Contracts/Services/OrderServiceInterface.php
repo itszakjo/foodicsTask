@@ -7,5 +7,5 @@ use App\Models\Order;
 
 interface OrderServiceInterface
 {
-    public function createOrder(int $userId, array $products): Order;
+    public function createOrder(int $userId, array $data): Order;
 }

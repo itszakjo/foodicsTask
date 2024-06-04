@@ -32,11 +32,11 @@ class OrderService implements OrderServiceInterface
      * Create a new order for the specified user with the given items.
      *
      * @param int $userId The ID of the user placing the order.
-     * @param array $items An array of items to be ordered, each item containing 'product_id' and 'quantity'.
+     * @param array $data
      * @return Order The created order.
      * @throws SystemException If an error occurs while creating the order.
      */
-    public function createOrder(int $userId, array $items) : Order
+    public function createOrder(int $userId, array $data) : Order
     {
         try {
             DB::beginTransaction();
@@ -45,7 +45,7 @@ class OrderService implements OrderServiceInterface
             $order = $this->orderRepository->create(['user_id' => $userId]);
 
             // Process Order Items
-            $this->processOrderItems($order,$items);
+            $this->processOrderItems($order,$data);
 
             DB::commit();
 
@@ -56,7 +56,7 @@ class OrderService implements OrderServiceInterface
 
             Log::error("Failed to create order: {$e->getMessage()}", [
                 'user_id' => $userId,
-                'products' => $items,
+                'products' => $data['products'],
                 'exception' => $e
             ]);
 
@@ -69,15 +69,15 @@ class OrderService implements OrderServiceInterface
      * Handles processing order items and updating stock.
      *
      * @param Order $order The order to process items for.
-     * @param array $items The array of items to process.
+     * @param array $data The array of items to process.
      * @return void
      */
-    public function processOrderItems($order,$items)
+    public function processOrderItems($order,$data)
     {
         /*
          *  Handles order items and stock updates
          */
-        foreach ($items['products'] as $item) {
+        foreach ($data['products'] as $item) {
             $product = $this->productRepository->find($item['product_id']);
 
             // assign order items
