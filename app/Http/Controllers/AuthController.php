@@ -24,7 +24,7 @@ class AuthController extends Controller
             ]);
         }
 
-        // in a more advanced scenario, we can add ability/scope ['order-store'] to limit the token actions
+        //TODO: in a more advanced scenario, we can add ability/scope ['order-create'] to limit the token actions
         $token = $request->user()->createToken('auth-token')->plainTextToken;
 
         return $this->respondWithToken($token);
