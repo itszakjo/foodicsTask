@@ -39,7 +39,7 @@ class NotificationRepository implements NotificationRepositoryInterface
      *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
      */
-    public function findByIngredient($ingredientId): Notification
+    public function findByIngredient($ingredientId)
     {
         return Notification::where('ingredient_id' , $ingredientId)->first();
     }

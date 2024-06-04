@@ -95,7 +95,7 @@ class InventoryService implements InventoryServiceInterface
      * Check if the ingredient has already been notified.
      *
      * @param  \App\Models\Ingredient  $ingredient
-     * @return \App\Models\Notification
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
     private function isIngredientNotified($ingredient)
     {

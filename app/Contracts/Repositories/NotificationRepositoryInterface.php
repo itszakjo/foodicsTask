@@ -13,5 +13,5 @@ interface NotificationRepositoryInterface extends Repository
      *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
      */
-    public function findByIngredient($ingredientId) : Notification;
+    public function findByIngredient($ingredientId);
 }
