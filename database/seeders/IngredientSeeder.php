@@ -14,9 +14,9 @@ class IngredientSeeder extends Seeder
     public function run(): void
     {
         $ingredients = [
-            ['name' => 'Beef',      'unit' => 'g', 'stock_quantity' => 20000],
-            ['name' => 'Cheese',    'unit' => 'g', 'stock_quantity' => 5000],
-            ['name' => 'Onion',     'unit' => 'g', 'stock_quantity' => 1000],
+            ['name' => 'Beef',      'unit' => 'g', 'stock_quantity' => 20000 , 'initial_stock' => 20000],
+            ['name' => 'Cheese',    'unit' => 'g', 'stock_quantity' => 5000, 'initial_stock'=> 5000],
+            ['name' => 'Onion',     'unit' => 'g', 'stock_quantity' => 1000, 'initial_stock'=> 1000],
         ];
 
         foreach ($ingredients as $ingredient) {
