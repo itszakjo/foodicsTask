@@ -9,17 +9,7 @@ class Ingredient extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'unit', 'stock_quantity'];
-
-    protected $initial_stock = 0;
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($ingredient) {
-            $ingredient->initial_stock = $ingredient->stock_quantity;
-        });
-    }
+    protected $fillable = ['name', 'unit', 'stock_quantity', 'initial_stock'];
 
     public function products()
     {

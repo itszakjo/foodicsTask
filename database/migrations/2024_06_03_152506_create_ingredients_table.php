@@ -16,7 +16,11 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('unit'); // Unit of measurement (e.g., g, kg, ml)
             $table->decimal('stock_quantity', 10, 2);
+            $table->decimal('initial_stock', 10, 2);
             $table->timestamps();
+
+            $table->index(['stock_quantity' , 'initial_stock']);
+
         });
     }
 
