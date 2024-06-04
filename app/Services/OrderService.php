@@ -79,14 +79,7 @@ class OrderService implements OrderServiceInterface
          *  Handles order items and stock updates
          */
 
-        $existingProductIds = $order->items()->pluck('product_id')->toArray();
-
         foreach ($data['products'] as $item) {
-            // Check if the product has already been added to the order
-            if (in_array($item['product_id'], $existingProductIds)) {
-                throw new SystemException('Duplicate product entry found.');
-            }
-
             $product = $this->productRepository->find($item['product_id']);
 
             // assign order items
