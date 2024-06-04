@@ -20,7 +20,7 @@ interface Repository
     /**
      * @param array $data
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
      */
     public function create(array $data);
 }

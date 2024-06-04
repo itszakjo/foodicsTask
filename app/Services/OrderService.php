@@ -8,6 +8,7 @@ use App\Contracts\Services\InventoryServiceInterface;
 use App\Contracts\Services\OrderServiceInterface;
 use App\Exceptions\SystemException;
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -35,7 +36,7 @@ class OrderService implements OrderServiceInterface
      * @return Order The created order.
      * @throws SystemException If an error occurs while creating the order.
      */
-    public function createOrder(int $userId, array $items): Order
+    public function createOrder(int $userId, array $items) : Order
     {
         try {
             DB::beginTransaction();
@@ -64,15 +65,23 @@ class OrderService implements OrderServiceInterface
 
     }
 
+    /**
+     * Handles processing order items and updating stock.
+     *
+     * @param Order $order The order to process items for.
+     * @param array $items The array of items to process.
+     * @return void
+     */
     public function processOrderItems($order,$items)
     {
         /*
          *  Handles order items and stock updates
          */
-        foreach ($items as $item) {
+        foreach ($items['products'] as $item) {
             $product = $this->productRepository->find($item['product_id']);
 
-            $order->items()->attach($product, ['quantity' => $item['quantity']]);
+            // assign order items
+            $order->items()->create(['order_id'=> $order->id, 'product_id'=> $product->id ,'quantity' => $item['quantity']]);
 
             $this->inventoryService->updateStock($product, $item['quantity']);
         }

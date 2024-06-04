@@ -13,7 +13,7 @@ class OrderRepository implements OrderRepositoryInterface
      *
      * @param mixed $id
      *
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
+     * @return Order
      */
     public function find($id): Order
     {
@@ -23,7 +23,7 @@ class OrderRepository implements OrderRepositoryInterface
     /**
      * @param array $data
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Order
      */
     public function create(array $data): Order
     {

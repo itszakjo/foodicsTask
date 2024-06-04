@@ -2,64 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Services\OrderServiceInterface;
+use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private $orderService;
+
+    public function __construct(OrderServiceInterface $orderService)
     {
-        //
+        $this->orderService = $orderService;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create a new order.
+     *
+     * @param OrderRequest $orderRequest
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function create()
+    public function create(OrderRequest $orderRequest)
     {
-        //
-    }
+        try {
+            $order = $this->orderService->createOrder(auth()->user()->id,  $orderRequest->validated());
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+            return response()->json(['message' => 'Order placed successfully', 'order_number' => $order->id]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 422);
+        }
     }
 }
