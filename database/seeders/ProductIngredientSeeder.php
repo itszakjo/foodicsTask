@@ -14,11 +14,19 @@ class ProductIngredientSeeder extends Seeder
      */
     public function run(): void
     {
+//        $products = [
+//            'Burger' => [
+//                ['ingredient' => 'Beef', 'quantity' => 150], // 150g Beef
+//                ['ingredient' => 'Cheese', 'quantity' => 30], // 30g Cheese
+//                ['ingredient' => 'Onion', 'quantity' => 20], // 20g Onion
+//            ]
+//        ];
+
         $products = [
             'Burger' => [
-                ['ingredient' => 'Beef', 'quantity' => 150], // 150g Beef
-                ['ingredient' => 'Cheese', 'quantity' => 30], // 30g Cheese
-                ['ingredient' => 'Onion', 'quantity' => 20], // 20g Onion
+                ['ingredient' => 'Beef', 'quantity' => 0.150], // 150g Beef
+                ['ingredient' => 'Cheese', 'quantity' => 0.030], // 30g Cheese
+                ['ingredient' => 'Onion', 'quantity' => 0.020], // 20g Onion
             ]
         ];
 
