@@ -2,14 +2,16 @@
 
 namespace App\Providers;
 
-use App\Repositories\IngredientNotificationRepositoryInterface;
-use App\Repositories\IngredientNotificationRepository;
-use App\Repositories\OrderItemRepository;
-use App\Repositories\OrderItemRepositoryInterface;
+use App\Contracts\Repositories\NotificationRepositoryInterface;
+use App\Contracts\Repositories\OrderRepositoryInterface;
+use App\Contracts\Repositories\ProductRepositoryInterface;
+use App\Contracts\Services\InventoryServiceInterface;
+use App\Contracts\Services\OrderServiceInterface;
+use App\Repositories\NotificationRepository;
 use App\Repositories\OrderRepository;
-use App\Repositories\OrderRepositoryInterface;
 use App\Repositories\ProductRepository;
-use App\Repositories\ProductRepositoryInterface;
+use App\Services\InventoryService;
+use App\Services\OrderService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,10 +21,27 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
-        $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
-        $this->app->bind(OrderItemRepositoryInterface::class, OrderItemRepository::class);
-        $this->app->bind(IngredientNotificationRepositoryInterface::class, IngredientNotificationRepository::class);
+        $this->app->bind(
+            ProductRepositoryInterface::class,
+            ProductRepository::class);
+
+        $this->app->bind(
+            OrderRepositoryInterface::class,
+            OrderRepository::class);
+
+        $this->app->bind(
+            NotificationRepositoryInterface::class,
+            NotificationRepository::class);
+
+        $this->app->bind(
+            InventoryServiceInterface::class,
+            InventoryService::class
+        );
+
+        $this->app->bind(
+            OrderServiceInterface::class,
+            OrderService::class
+        );
     }
 
     /**
