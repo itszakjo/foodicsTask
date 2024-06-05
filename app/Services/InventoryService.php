@@ -73,7 +73,7 @@ class InventoryService implements InventoryServiceInterface
      * @param Ingredient $ingredient The ingredient with low stock
      * @return void
      */
-    private function notifyMerchant($ingredient)
+    public function notifyMerchant($ingredient)
     {
         Notification::route('mail', config('mail.merchant_address'))->notify(new IngredientStockNotification($ingredient));
 
@@ -97,7 +97,7 @@ class InventoryService implements InventoryServiceInterface
      * @param  \App\Models\Ingredient  $ingredient
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    private function isIngredientNotified($ingredient)
+    public function isIngredientNotified($ingredient)
     {
         return $this->notificationRepository->findByIngredient($ingredient->id);
     }
@@ -108,7 +108,7 @@ class InventoryService implements InventoryServiceInterface
      * @param  string  $unit
      * @return int
      */
-    private function convertToBaseUnit($unit)
+    public function convertToBaseUnit($unit)
     {
         $conversionRates = [
             'g'     => 1000,
