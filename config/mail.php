@@ -114,5 +114,5 @@ return [
     ],
 
 
-    'merchant_address' => 'merchant@mail.com'
+    'merchant_address' => env('MAIL_MERCHANT_ADDRESS', 'merchant@example.com'),
 ];
