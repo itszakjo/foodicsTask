@@ -20,11 +20,12 @@ The task is building an inventory management system
 11. Ingredient Unit Management to handle different units of measurement.
 12. DB transactions are applied to handle race conditions.
 13. Queues are used to handle email notifications ( for more advanced queue system we can Redis for example)
-14. Using Docker through Laravel Sail to create docker-compose.yaml.
-15. Swagger Docs are implemented for better and easier API testing.
-16. Unit & Feature Tests are added. 
-17. Logging for critical operation and errors. 
-18. App is deployed and documented here https://meta.endlessref.com/api/documentation
+14. Notifications are configured to queue only after successful db transaction.
+15. Using Docker through Laravel Sail to create docker-compose.yaml.
+16. Swagger Docs are implemented for better and easier API testing.
+17. Unit & Feature Tests are added. 
+18. Logging for critical operation and errors. 
+19. App is deployed and documented here https://meta.endlessref.com/api/documentation
 
 ## potential features for better performance 
 1. Events for stock updates and EDA.
