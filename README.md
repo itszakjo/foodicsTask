@@ -3,7 +3,7 @@
 
 ## Intro
 This Repo is for Foodics Hiring Task.
-The task is building an inventory management system
+The task is building an inventory management system ( single merchant )
 
 ## Features
 1. Simple auth system with Sanctum (for advanced auth system with OAuth2 passport is recommended )
@@ -31,6 +31,7 @@ The task is building an inventory management system
 1. Events for stock updates and EDA.
 2. Redis for caching initial stocks and handling queues.
 3. passport for more advanced auth system.
+4. implement observer pattern to handle notifications for multiple merchants. 
 
 
 
