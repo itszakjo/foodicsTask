@@ -35,7 +35,7 @@ use Illuminate\Http\Response;
  * @return Response
 
  * @OA\Post(
- *     path="/api/v1/order/create",
+ *     path="/api/v1/orders",
  *     tags={"create order"},
  *     summary="create order ",
  *     @OA\Response(response=201, description="create order", @OA\JsonContent()),

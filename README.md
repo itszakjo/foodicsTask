@@ -130,7 +130,7 @@ X-POST /api/v1/login
 
 #### create order :
 ```http
-x-POST /api/v1/order/create
+x-POST /api/v1/orders
 -H 'Authorization: 'your_token' \
 
 ```
