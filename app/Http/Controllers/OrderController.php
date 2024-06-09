@@ -27,7 +27,7 @@ class OrderController extends Controller
         try {
             $order = $this->orderService->createOrder(auth()->user()->id,  $orderRequest->validated());
 
-            return response()->json(['message' => 'Order placed successfully', 'order_number' => $order->id]);
+            return response()->json(['message' => 'Order placed successfully', 'order_number' => $order->id] , 201);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 422);
         }

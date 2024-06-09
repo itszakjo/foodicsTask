@@ -34,14 +34,14 @@ class OrderControllerTest extends TestCase
 
         // Send authenticated request to create an order
         $response = $this->withHeader('Authorization', 'Bearer ' . $token)
-            ->postJson('/api/v1/order/create', [
+            ->postJson('/api/v1/orders', [
                 'products' => [
                     ['product_id' => $product->id, 'quantity' => 2]
                 ]
             ]);
 
         // Assert response status and order creation
-        $response->assertStatus(200);
+        $response->assertStatus(201);
         $this->assertDatabaseHas('orders', ['id' => 1]);
         $this->assertDatabaseHas('product_ingredients', ['product_id' => $product->id, 'ingredient_id' => $ingredient1->id]);
         $this->assertDatabaseHas('product_ingredients', ['product_id' => $product->id, 'ingredient_id' => $ingredient2->id]);
