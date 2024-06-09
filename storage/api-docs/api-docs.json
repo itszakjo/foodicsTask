@@ -42,13 +42,13 @@
                 }
             }
         },
-        "/api/v1/order/create": {
+        "/api/v1/orders": {
             "post": {
                 "tags": [
                     "create order"
                 ],
                 "summary": "create order ",
-                "operationId": "8a75511efc9f788714f4d097ad1d2731",
+                "operationId": "fd889b957e13d134c2bfea6994030c9e",
                 "requestBody": {
                     "required": true,
                     "content": {
