@@ -25,6 +25,7 @@ class OrderServiceTest extends TestCase
      * Test creating an order.
      *
      * This test ensures that an order is created successfully when valid data provided and order items are assigned correctly.
+     * @throws \App\Exceptions\SystemException
      */
     public function test_create_order()
     {
@@ -78,6 +79,7 @@ class OrderServiceTest extends TestCase
 
         // Mock Log facade
         Log::shouldReceive('error')->never();
+        Log::shouldReceive('info')->once();
 
         // Create an instance of the OrderService
         $orderService = new OrderService($orderRepository, $productRepository, $inventoryService);

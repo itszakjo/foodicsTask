@@ -83,7 +83,7 @@ class InventoryService implements InventoryServiceInterface
      * @return void
      * @throws SystemException
      */
-    public function notifyMerchant($ingredient)
+    private function notifyMerchant($ingredient)
     {
         Notification::route('mail', config('mail.merchant_address'))->notify(new IngredientStockNotification($ingredient));
 
@@ -97,7 +97,7 @@ class InventoryService implements InventoryServiceInterface
      * @return void
      * @throws SystemException
      */
-    public function persistNotification($ingredient)
+    private function persistNotification($ingredient)
     {
         try {
             $this->notificationRepository->create(['ingredient_id' => $ingredient->id]);
@@ -116,7 +116,7 @@ class InventoryService implements InventoryServiceInterface
      * @param  \App\Models\Ingredient  $ingredient
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function isIngredientNotified($ingredient)
+    private function isIngredientNotified($ingredient)
     {
         return $this->notificationRepository->findByIngredient($ingredient->id);
     }
@@ -127,7 +127,7 @@ class InventoryService implements InventoryServiceInterface
      * @param  string  $unit
      * @return int
      */
-    public function getUnitRate($unit)
+    private function getUnitRate($unit)
     {
         //use config('units.conversion_rates') if you need to use this array for other functions
         $conversionRates = [
