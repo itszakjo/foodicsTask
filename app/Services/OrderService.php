@@ -49,6 +49,8 @@ class OrderService implements OrderServiceInterface
 
             DB::commit();
 
+            Log::info("Successfully created order ID: {$order->id} for user ID: {$userId}");
+
             return $order;
         }catch (\Exception $e) {
             // Rollback the transaction in case of an exception

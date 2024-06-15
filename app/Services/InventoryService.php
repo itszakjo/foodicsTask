@@ -8,6 +8,7 @@ use App\Exceptions\SystemException;
 use App\Models\Ingredient;
 use App\Models\Product;
 use App\Notifications\IngredientStockNotification;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
@@ -25,18 +26,21 @@ class InventoryService implements InventoryServiceInterface
      *
      * @param Product $product The product being ordered.
      * @param int $quantity The quantity of the product being ordered.
-     * @throws SystemException If there is insufficient stock for any ingredient.
+     * @return bool
+     * @throws SystemException if stock is insufficient or notification failed to persist
      */
     public function updateStock($product,$quantity)
     {
+        Log::debug("Updating stock for product '{$product->name}' (ID: {$product->id}), quantity: {$quantity}");
+
         foreach ($product->ingredients as $ingredient) {
 
             // Calculate the required quantity of the ingredient in base units
-            $requiredQuantity = $this->convertToBaseUnit($ingredient->pivot->unit) * $ingredient->pivot->quantity * $quantity;
+            $requiredQuantity = $this->getUnitRate($ingredient->unit) * $ingredient->pivot->quantity * $quantity;
 
             // Check if there is sufficient stock for the ingredient
             if ($ingredient->stock_quantity < $requiredQuantity) {
-                Log::info("Exception thrown for insufficient stock for ingredient: {$ingredient->name}");
+                Log::info("Exception thrown for insufficient stock for ingredient '{$ingredient->name}' (ID: {$ingredient->id}).");
 
                 throw new SystemException("Insufficient stock for ingredient: {$ingredient->name}");
             }
@@ -47,6 +51,10 @@ class InventoryService implements InventoryServiceInterface
             // Check stock levels after updating the stock
             $this->checkStockLevels($ingredient);
         }
+
+        Log::info("Successfully updated stock for product '{$product->name}' (ID: {$product->id})");
+
+        return true;
     }
 
     /**
@@ -54,6 +62,7 @@ class InventoryService implements InventoryServiceInterface
      *
      * @param Ingredient $ingredient The ingredient to check stock levels for.
      * @return void
+     * @throws SystemException
      */
     public function checkStockLevels($ingredient)
     {
@@ -72,6 +81,7 @@ class InventoryService implements InventoryServiceInterface
      *
      * @param Ingredient $ingredient The ingredient with low stock
      * @return void
+     * @throws SystemException
      */
     public function notifyMerchant($ingredient)
     {
@@ -85,10 +95,19 @@ class InventoryService implements InventoryServiceInterface
      *
      * @param Ingredient $ingredient The ingredient with low stock
      * @return void
+     * @throws SystemException
      */
-    private function persistNotification($ingredient)
+    public function persistNotification($ingredient)
     {
-        $this->notificationRepository->create(['ingredient_id' => $ingredient->id]);
+        try {
+            $this->notificationRepository->create(['ingredient_id' => $ingredient->id]);
+
+            Log::info("persisted notification for ingredient : {$ingredient->name} Successfully");
+        } catch (\Exception $e) {
+            Log::error("Error persisting notification for ingredient '{$ingredient->name}': ID: [{$ingredient->id}] " . $e->getMessage());
+
+            throw new SystemException("Error persisting notification for ingredient '{$ingredient->name}'");
+        }
     }
 
     /**
@@ -103,13 +122,14 @@ class InventoryService implements InventoryServiceInterface
     }
 
     /**
-     * Convert the quantity of an ingredient to its base unit.
+     * Get the unit rate
      *
      * @param  string  $unit
      * @return int
      */
-    public function convertToBaseUnit($unit)
+    public function getUnitRate($unit)
     {
+        //use config('units.conversion_rates') if you need to use this array for other functions
         $conversionRates = [
             'g'     => 1000,
             'kg'    => 1,
@@ -117,6 +137,12 @@ class InventoryService implements InventoryServiceInterface
             'l'     => 1,
         ];
 
-        return $conversionRates[$unit] ?? 1;
+        if (!isset($conversionRates[$unit])) {
+            Log::error("Failed to find: '{$unit}' in conversation rates");
+
+            throw new \InvalidArgumentException("Unsupported Unit: '{$unit}'");
+        }
+
+        return $conversionRates[$unit];
     }
 }
